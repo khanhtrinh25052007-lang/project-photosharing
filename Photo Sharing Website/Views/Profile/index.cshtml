@@ -1,0 +1,119 @@
+﻿@model Photo_Sharing_Website.Models.UserProfile
+
+@using System.Collections.Generic
+@using Photo_Sharing_Website.Models
+
+@{
+    ViewBag.Title = "Trang ca nhan";
+    var photos = ViewBag.Photos as List<Photo>;
+}
+
+<div class="container mt-4">
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2>
+                @(string.IsNullOrWhiteSpace(Model.DisplayName)
+                    ? Model.UserName
+                    : Model.DisplayName)
+            </h2>
+
+            <p><strong>Username:</strong> @Model.UserName</p>
+
+            <p>
+                @(string.IsNullOrWhiteSpace(Model.Bio)
+                    ? "Chua co gioi thieu."
+                    : Model.Bio)
+            </p>
+
+            <div class="d-flex flex-wrap gap-4 mb-3">
+                <span>
+                    <strong>@ViewBag.PhotoCount</strong> anh
+                </span>
+
+                <a href="@Url.Action("Followers", "Profile",
+                    new { username = Model.UserName })">
+                    <strong>@ViewBag.FollowerCount</strong> nguoi theo doi
+                </a>
+
+                <a href="@Url.Action("Following", "Profile",
+                    new { username = Model.UserName })">
+                    <strong>@ViewBag.FollowingCount</strong> dang theo doi
+                </a>
+            </div>
+
+            <a class="btn btn-primary"
+               href="@Url.Action("Edit", "Profile",
+                    new { username = Model.UserName })">
+                Chinh sua trang ca nhan
+            </a>
+        </div>
+    </div>
+
+    <h3>Anh da dang</h3>
+
+    @if (photos == null || photos.Count == 0)
+    {
+        <p>Tai khoan nay chua dang anh nao.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var photo in photos)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <img src="@Url.Content(photo.ImagePath)"
+                             alt="@photo.Caption"
+                             class="card-img-top"
+                             style="width:100%; height:250px; object-fit:cover;" />
+
+                        <div class="card-body">
+                            <p class="card-text">@photo.Caption</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @if (ViewBag.CurrentUser != null &&
+    !string.Equals(
+        ViewBag.CurrentUser.ToString(),
+        Model.UserName,
+        StringComparison.OrdinalIgnoreCase))
+    {
+        if (ViewBag.IsFollowing == true)
+        {
+            using (Html.BeginForm("UnfollowUser", "Follow", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.Hidden("followerUserName", (string)ViewBag.CurrentUser)
+                @Html.Hidden("followingUserName", Model.UserName)
+
+                <button type="submit" class="btn btn-outline-danger">
+                    Unfollow
+                </button>
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("FollowUser", "Follow", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.Hidden("followerUserName", (string)ViewBag.CurrentUser)
+                @Html.Hidden("followingUserName", Model.UserName)
+
+                <button type="submit" class="btn btn-primary">
+                    Follow
+                </button>
+            }
+        }
+    }
+</div>
