@@ -1,0 +1,39 @@
+﻿@model IEnumerable<string>
+
+@{
+    ViewBag.Title = "Dang theo doi";
+}
+
+<div class="container mt-4">
+    <h2>Danh sach dang theo doi</h2>
+
+    <p>
+        Tai khoan:
+        <strong>@ViewBag.Username</strong>
+    </p>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p>Tai khoan nay chua theo doi ai.</p>
+    }
+    else
+    {
+        <ul class="list-group">
+            @foreach (var username in Model)
+            {
+                <li class="list-group-item">
+                    <a href="@Url.Action("Index", "Profile",
+                        new { username = username })">
+                        @username
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+
+    <a class="btn btn-secondary mt-3"
+       href="@Url.Action("Index", "Profile",
+            new { username = ViewBag.Username })">
+        Quay lai trang ca nhan
+    </a>
+</div>
