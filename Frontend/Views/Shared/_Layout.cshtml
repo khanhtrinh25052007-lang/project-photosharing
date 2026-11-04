@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewBag.Title - PhotoShare</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <!-- TOP NAVIGATION -->
+        <header class="top-navbar">
+
+            <!-- BRAND -->
+            <div class="navbar-brand">
+                <a href="@Url.Action("Index", "Home")" class="brand-link">
+                    <span class="brand-icon">🌿</span>
+                    <span class="brand-name">PhotoShare</span>
+                </a>
+            </div>
+
+            <!-- NAVIGATION MENU -->
+            <nav class="navbar-menu">
+
+                <a href="@Url.Action("Index", "Home")" class="nav-item active">
+                    Home
+                </a>
+
+                <a href="#" class="nav-item">
+                    Discover
+                </a>
+
+                <a href="#" class="nav-item">
+                    Moments
+                </a>
+
+                <a href="#" class="nav-item">
+                    My Gallery
+                </a>
+
+            </nav>
+
+            <!-- USER AREA -->
+            <div class="navbar-user">
+
+                <a href="#" class="navbar-create">
+                    <span>+</span>
+                    <span>Create</span>
+                </a>
+
+                <a href="@Url.Action("Login", "Account")" class="navbar-account">
+                    <span class="account-avatar">○</span>
+                    <span>Sign in</span>
+                </a>
+
+            </div>
+
+        </header>
+
+        <!-- Main content -->
+        <main class="main-content">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
